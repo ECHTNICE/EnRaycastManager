@@ -1,0 +1,15 @@
+{
+    "name": "ECHTNICE.Unity.EnRaycastManager",
+    "displayName": "ECHTNICE RaycastManager",
+    "version": "0.0.1",
+    "unity": "2020.1",
+    "description": "Raycast Manager, for situations where we need visual Raycast Editor support in Unity.",
+    "keywords": [
+        "raycast",
+        "capsulecast",
+        "spherecast",
+        "boxcast",
+        "unity"
+    ],
+    "category": "Unity"
+}
