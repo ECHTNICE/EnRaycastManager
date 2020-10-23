@@ -11,3 +11,6 @@ To install this package, add the following line to your `manifest.json` file loc
 ```json
 "com.echtnice.enraycastmanager": "git+https://github.com/ECHTNICE/com.echtnice.enraycastmanager"
 ```
+
+
+This project is licensed under the terms of the MIT license.
