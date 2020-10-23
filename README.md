@@ -1,9 +1,28 @@
-# ECHTNICE.Unity.EnRaycastManager
+# EnRaycastManager
 Unity Raycast Manager
 
 [![version](https://img.shields.io/github/package-json/v/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)]()
 [![license](https://img.shields.io/github/license/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)](./LICENSE)
 
+# Features
+[![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]
+
+- Edit in SceneView
+- SceneView Tool: Test Single Cast Item, Test All Cast Items
+- Visualisation: Normals, GameObject Name, Position
+- Support Types: 
+        Raycast,
+        RaycastAll,
+        RaycastNonAlloc,
+        CapsuleCast,
+        CapsuleCastAll,
+        CapsuleCastNonAlloc,
+        SphereCast,
+        SphereCastAll,
+        SphereCastNonAlloc,
+        BoxCast,
+        BoxCastAll,
+        BoxCastNonAlloc
 
 # Installation
 
