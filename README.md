@@ -5,7 +5,7 @@ Unity Raycast Manager
 [![license](https://img.shields.io/github/license/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)](./LICENSE)
 
 # Features
-[![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]
+[![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]()
 
 - Edit in SceneView
 - SceneView Tool: Test Single Cast Item, Test All Cast Items
@@ -23,6 +23,9 @@ Unity Raycast Manager
         BoxCast,
         BoxCastAll,
         BoxCastNonAlloc
+
+[![inspector](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/enraycastmanager.inspector.png)]()
+
 
 # Installation
 
