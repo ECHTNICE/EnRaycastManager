@@ -1,3 +1,10 @@
+#package specific ignores
+
+Packages
+ProjectSettings
+UserSettings
+
+#package specific ignores
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
