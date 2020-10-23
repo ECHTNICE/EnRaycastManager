@@ -123,6 +123,192 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &2216486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2216488}
+  - component: {fileID: 2216487}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2216487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ce5842dd17eb549a31c00f80273b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ID: 1
+  m_Priority: 0
+  m_RaycastMethodType: 1
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_QueryTriggerInteraction: 0
+  m_RaycastAllwaysAllItems: 0
+  m_RaycastAdapter: 0
+  m_ExpectedCollisionColor: {r: 0, g: 1, b: 0, a: 1}
+  m_NotExpectedCollisionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_ExpectedNoCollisionColor: {r: 1, g: 0, b: 0, a: 1}
+  m_Editable: 0
+  m_HideDefaultHandle: 1
+  m_ShowRaycastTool: 1
+  m_DrawType: 1
+  m_DrawWireView: 1
+  m_DrawNormals: 1
+  m_DrawText: 1
+  m_DrawPointSize: 0.146
+  m_Success: 0
+  m_Collider: {fileID: 0}
+  items:
+  - m_Type: 3
+    m_Expect: 0
+    Executed: 1
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 0, y: 0, z: 0}
+    m_HeightAxis: 0
+    m_Radius: 0
+    m_Height: 0
+    m_Size: {x: 0, y: 0, z: 0}
+    m_Direction: {x: 0, y: 1, z: 0}
+    m_MaxDistance: 0
+    m_Color: {r: 0, g: 0, b: 0, a: 0}
+  - m_Type: 0
+    m_Expect: 0
+    Executed: 1
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 1, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.5
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0, y: 0, z: -1}
+    m_MaxDistance: 4
+    m_Color: {r: 0, g: 0, b: 0, a: 1}
+  - m_Type: 6
+    m_Expect: 2
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: -1.2201519, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.2
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0.05495484, y: 0, z: 0.9984888}
+    m_MaxDistance: 4.006051
+    m_Color: {r: 0.47096008, g: 0.5, b: 0.08726415, a: 0.5176471}
+  - m_Type: 0
+    m_Expect: 0
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 0, y: 0, z: 0}
+    m_HeightAxis: 0
+    m_Radius: 0
+    m_Height: 0
+    m_Size: {x: 0, y: 0, z: 0}
+    m_Direction: {x: 0, y: 0, z: 0}
+    m_MaxDistance: 0
+    m_Color: {r: 0, g: 0, b: 0, a: 0}
+  - m_Type: 0
+    m_Expect: 0
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 1, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.5
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0, y: 0, z: 1}
+    m_MaxDistance: 4
+    m_Color: {r: 0, g: 0, b: 0, a: 1}
+  - m_Type: 0
+    m_Expect: 0
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 1, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.5
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0, y: 0, z: 1}
+    m_MaxDistance: 4
+    m_Color: {r: 0, g: 0, b: 0, a: 1}
+  - m_Type: 0
+    m_Expect: 0
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: 1, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.5
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0, y: 0, z: 1}
+    m_MaxDistance: 4
+    m_Color: {r: 0, g: 0, b: 0, a: 1}
+  - m_Type: 6
+    m_Expect: 2
+    Executed: 0
+    Result: 0
+    Success: 0
+    level: 0
+    quantity: 0
+    m_Origin: {x: -1.2201519, y: 1, z: 0}
+    m_HeightAxis: 1
+    m_Radius: 0.2
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0.05495484, y: 0, z: 0.9984888}
+    m_MaxDistance: 4.006051
+    m_Color: {r: 0.47096008, g: 0.5, b: 0.08726415, a: 0.5176471}
+--- !u!4 &2216488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.04021056, y: 0.8732414, z: -0.2649236}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &158498095
 GameObject:
   m_ObjectHideFlags: 0

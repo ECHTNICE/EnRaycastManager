@@ -1,7 +1,9 @@
 {
-    "name": "com.ECHTNICE.EnRaycastManager",
+    "name": "ECHTNICE.EnRaycastManager.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:bea879c194c0f9e44bd1ef8efe6d9d0e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
