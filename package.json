@@ -1,7 +1,7 @@
 {
     "name": "com.echtnice.enraycastmanager",
     "displayName": "ECHTNICE RaycastManager",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "unity": "2020.1",
     "description": "Raycast Manager, for situations where we need a visual Raycast Editor support in Unity.",
     "keywords": [
