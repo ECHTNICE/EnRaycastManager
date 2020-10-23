@@ -2,7 +2,8 @@
 Unity Raycast Manager
 
 [![version](https://img.shields.io/github/package-json/v/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)]()
-[![license](https://img.shields.io/github/license/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)]()
+[![license](https://img.shields.io/github/license/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)](./LICENSE)
+
 
 # Installation
 
