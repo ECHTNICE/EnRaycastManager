@@ -1,5 +1,5 @@
 {
-    "name": "ECHTNICE.Unity.EnRaycastManager",
+    "name": "com.ECHTNICE.EnRaycastManager.Editor",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [
