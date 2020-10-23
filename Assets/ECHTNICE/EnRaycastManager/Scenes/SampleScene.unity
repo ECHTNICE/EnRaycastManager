@@ -123,192 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &2216486
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2216488}
-  - component: {fileID: 2216487}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2216487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2216486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ce5842dd17eb549a31c00f80273b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ID: 1
-  m_Priority: 0
-  m_RaycastMethodType: 1
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_QueryTriggerInteraction: 0
-  m_RaycastAllwaysAllItems: 0
-  m_RaycastAdapter: 0
-  m_ExpectedCollisionColor: {r: 0, g: 1, b: 0, a: 1}
-  m_NotExpectedCollisionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  m_ExpectedNoCollisionColor: {r: 1, g: 0, b: 0, a: 1}
-  m_Editable: 0
-  m_HideDefaultHandle: 1
-  m_ShowRaycastTool: 1
-  m_DrawType: 1
-  m_DrawWireView: 1
-  m_DrawNormals: 1
-  m_DrawText: 1
-  m_DrawPointSize: 0.146
-  m_Success: 0
-  m_Collider: {fileID: 0}
-  items:
-  - m_Type: 3
-    m_Expect: 0
-    Executed: 1
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 0, y: 0, z: 0}
-    m_HeightAxis: 0
-    m_Radius: 0
-    m_Height: 0
-    m_Size: {x: 0, y: 0, z: 0}
-    m_Direction: {x: 0, y: 1, z: 0}
-    m_MaxDistance: 0
-    m_Color: {r: 0, g: 0, b: 0, a: 0}
-  - m_Type: 0
-    m_Expect: 0
-    Executed: 1
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 1, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.5
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0, y: 0, z: -1}
-    m_MaxDistance: 4
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
-  - m_Type: 6
-    m_Expect: 2
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: -1.2201519, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.2
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0.05495484, y: 0, z: 0.9984888}
-    m_MaxDistance: 4.006051
-    m_Color: {r: 0.47096008, g: 0.5, b: 0.08726415, a: 0.5176471}
-  - m_Type: 0
-    m_Expect: 0
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 0, y: 0, z: 0}
-    m_HeightAxis: 0
-    m_Radius: 0
-    m_Height: 0
-    m_Size: {x: 0, y: 0, z: 0}
-    m_Direction: {x: 0, y: 0, z: 0}
-    m_MaxDistance: 0
-    m_Color: {r: 0, g: 0, b: 0, a: 0}
-  - m_Type: 0
-    m_Expect: 0
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 1, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.5
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0, y: 0, z: 1}
-    m_MaxDistance: 4
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
-  - m_Type: 0
-    m_Expect: 0
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 1, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.5
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0, y: 0, z: 1}
-    m_MaxDistance: 4
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
-  - m_Type: 0
-    m_Expect: 0
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: 1, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.5
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0, y: 0, z: 1}
-    m_MaxDistance: 4
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
-  - m_Type: 6
-    m_Expect: 2
-    Executed: 0
-    Result: 0
-    Success: 0
-    level: 0
-    quantity: 0
-    m_Origin: {x: -1.2201519, y: 1, z: 0}
-    m_HeightAxis: 1
-    m_Radius: 0.2
-    m_Height: 0.5
-    m_Size: {x: 1, y: 1, z: 1}
-    m_Direction: {x: 0.05495484, y: 0, z: 0.9984888}
-    m_MaxDistance: 4.006051
-    m_Color: {r: 0.47096008, g: 0.5, b: 0.08726415, a: 0.5176471}
---- !u!4 &2216488
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2216486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04021056, y: 0.8732414, z: -0.2649236}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &158498095
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 158498095}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 1, z: 5}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -455,7 +269,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_QueryTriggerInteraction: 0
-  m_RaycastAllwaysAllItems: 0
+  m_RaycastAllwaysAllItems: 1
   m_RaycastAdapter: 0
   m_ExpectedCollisionColor: {r: 0, g: 1, b: 0, a: 1}
   m_NotExpectedCollisionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -485,7 +299,7 @@ MonoBehaviour:
     m_Size: {x: 1, y: 1, z: 1}
     m_Direction: {x: 0, y: 0, z: 1}
     m_MaxDistance: 2
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
+    m_Color: {r: 0.56077945, g: 0.6981132, b: 0, a: 1}
   - m_Type: 0
     m_Expect: 0
     Executed: 1
@@ -499,13 +313,13 @@ MonoBehaviour:
     m_Height: 0.5
     m_Size: {x: 1, y: 1, z: 1}
     m_Direction: {x: 0, y: 0, z: 1}
-    m_MaxDistance: 1
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
+    m_MaxDistance: 3
+    m_Color: {r: 0.71624106, g: 0, b: 0.754717, a: 1}
   - m_Type: 0
     m_Expect: 2
-    Executed: 0
+    Executed: 1
     Result: 0
-    Success: 0
+    Success: 1
     level: 0
     quantity: 0
     m_Origin: {x: -1, y: 1, z: 0}
@@ -514,8 +328,8 @@ MonoBehaviour:
     m_Height: 0.5
     m_Size: {x: 1, y: 1, z: 1}
     m_Direction: {x: 0, y: 0, z: 1}
-    m_MaxDistance: 1
-    m_Color: {r: 0, g: 0, b: 0, a: 1}
+    m_MaxDistance: 3
+    m_Color: {r: 0, g: 0.6981132, b: 0.66935515, a: 1}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +358,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.5377358, g: 0.517033, b: 0.43373975, a: 1}
+  m_Color: {r: 0.49056602, g: 0.4478628, b: 0.34478462, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -644,8 +458,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.3949359, g: 0.66326666, b: 0.6698113, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -685,13 +499,94 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2458359, y: 0.36888692, z: -0.10182857, w: 0.8905718}
+  m_LocalPosition: {x: -4.98, y: 4.44, z: -5.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 30.864, y: 45, z: 0}
+--- !u!1 &1080218953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1080218954}
+  - component: {fileID: 1080218955}
+  m_Layer: 0
+  m_Name: RaycastForwardUpPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1080218954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080218953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1639805645}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1080218955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080218953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ce5842dd17eb549a31c00f80273b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ID: 0
+  m_Priority: 0
+  m_RaycastMethodType: 1
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_QueryTriggerInteraction: 0
+  m_RaycastAllwaysAllItems: 0
+  m_RaycastAdapter: 0
+  m_ExpectedCollisionColor: {r: 0, g: 1, b: 0, a: 1}
+  m_NotExpectedCollisionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_ExpectedNoCollisionColor: {r: 1, g: 0, b: 0, a: 1}
+  m_Editable: 0
+  m_HideDefaultHandle: 0
+  m_ShowRaycastTool: 1
+  m_DrawType: 1
+  m_DrawWireView: 0
+  m_DrawNormals: 1
+  m_DrawText: 1
+  m_DrawPointSize: 0.345
+  m_Success: 1
+  m_Collider: {fileID: 1773401238}
+  items:
+  - m_Type: 6
+    m_Expect: 1
+    Executed: 1
+    Result: 1
+    Success: 1
+    level: 0
+    quantity: 0
+    m_Origin: {x: 0, y: 3, z: 2.5}
+    m_HeightAxis: 1
+    m_Radius: 0.5
+    m_Height: 0.5
+    m_Size: {x: 1, y: 1, z: 1}
+    m_Direction: {x: 0, y: -1, z: 0}
+    m_MaxDistance: 2
+    m_Color: {r: 0.6603774, g: 0.2834639, b: 0.2834639, a: 0.36862746}
 --- !u!1 &1524614060
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +711,7 @@ Transform:
   m_Children:
   - {fileID: 1761857556}
   - {fileID: 519152820}
+  - {fileID: 1080218954}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
