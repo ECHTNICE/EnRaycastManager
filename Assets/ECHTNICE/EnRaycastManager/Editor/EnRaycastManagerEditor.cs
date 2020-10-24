@@ -364,13 +364,13 @@ public class EnRaycastManagerEditor : Editor {
             EnRaycastManager jsonEnRaycastManager = gameObject.AddComponent<EnRaycastManager>();
             JsonUtility.FromJsonOverwrite(json, jsonEnRaycastManager);
             if (jsonEnRaycastManager != null) {
-                var manager= ((EnRaycastManager)target);
+                var manager = ((EnRaycastManager)target);
                 manager.items = jsonEnRaycastManager.items.ToArray();
                 manager.m_ID = jsonEnRaycastManager.m_ID + 1;
                 manager.m_Priority = jsonEnRaycastManager.m_Priority;
                 manager.m_LayerMask = jsonEnRaycastManager.m_LayerMask;
                 manager.m_RaycastMethodType = jsonEnRaycastManager.m_RaycastMethodType;
-                manager.m_QueryTriggerInteraction  = jsonEnRaycastManager.m_QueryTriggerInteraction;
+                manager.m_QueryTriggerInteraction = jsonEnRaycastManager.m_QueryTriggerInteraction;
                 manager.m_RaycastAllwaysAllItems = jsonEnRaycastManager.m_RaycastAllwaysAllItems;
                 manager.m_ExpectedCollisionColor = jsonEnRaycastManager.m_ExpectedCollisionColor;
                 manager.m_NotExpectedCollisionColor = jsonEnRaycastManager.m_NotExpectedCollisionColor;
@@ -534,52 +534,25 @@ public class EnRaycastManagerEditor : Editor {
         if (!manager.m_ShowRaycastTool)
             return;
 
-        if (list.index != -1) {
-            SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(list.index);
-            var origin = element.FindPropertyRelative("m_Origin");
-            var radius = element.FindPropertyRelative("m_Radius");
-            var direction = element.FindPropertyRelative("m_Direction");
-            var maxDistance = element.FindPropertyRelative("m_MaxDistance");
-
-            if (GUILayout.Button("Round Values .00", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
-                origin.vector3Value = new Vector3(
-                    Mathf.Round(origin.vector3Value.x * 100) / 100,
-                    Mathf.Round(origin.vector3Value.y * 100) / 100,
-                    Mathf.Round(origin.vector3Value.z * 100) / 100
-                );
-                direction.vector3Value = new Vector3(
-                    Mathf.Round(direction.vector3Value.x * 100) / 100,
-                    Mathf.Round(direction.vector3Value.y * 100) / 100,
-                    Mathf.Round(direction.vector3Value.z * 100) / 100
-                );
-                maxDistance.floatValue = Mathf.Round(maxDistance.floatValue * 100) / 100;
-                radius.floatValue = Mathf.Round(radius.floatValue * 100) / 100;
-            }
-
-            if (GUILayout.Button("Round Values .0", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
-                origin.vector3Value = new Vector3(
-                    Mathf.Round(origin.vector3Value.x * 10) / 10,
-                    Mathf.Round(origin.vector3Value.y * 10) / 10,
-                    Mathf.Round(origin.vector3Value.z * 10) / 10
-                );
-                direction.vector3Value = new Vector3(
-                    Mathf.Round(direction.vector3Value.x * 10) / 10,
-                    Mathf.Round(direction.vector3Value.y * 10) / 10,
-                    Mathf.Round(direction.vector3Value.z * 10) / 10
-                );
-                maxDistance.floatValue = Mathf.Round(maxDistance.floatValue * 10) / 10;
-                radius.floatValue = Mathf.Round(radius.floatValue * 10) / 10;
-            }
+        var defaultColor = GUI.color;
+        var defaultBackgroundColor = GUI.backgroundColor;
+        var editable = manager.m_Editable;
+        GUI.backgroundColor = editable ? Color.gray : Color.green+ Color.green*0.2f;
+        if (GUILayout.Button(editable ? "Stop" : "Editing", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+            manager.m_Editable = !editable;
         }
+        GUI.color = defaultColor;
+        GUI.backgroundColor = defaultBackgroundColor;
 
-        if (GUILayout.Button("Test Raycast Item", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+        if (GUILayout.Button("Test Raycast", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
             RaycastHit raycastHit = new RaycastHit();
             var item = manager.items[list.index];
             if (item.RaycastMethod(manager, manager.transform, manager.m_LayerMask, out raycastHit))
                 manager.m_Collider = raycastHit.collider;
             manager.items[list.index] = item;
         }
-        if (GUILayout.Button("Test Raycast All", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+
+        if (GUILayout.Button("Test Raycasts", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
             RaycastHit raycastHit = new RaycastHit();
             bool success = true;
             for (int i = 0; i < manager.items.Length; i++) {
@@ -601,6 +574,45 @@ public class EnRaycastManagerEditor : Editor {
             }
             manager.m_Success = success;
         }
+
+        if (list.index != -1) {
+            SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(list.index);
+            var origin = element.FindPropertyRelative("m_Origin");
+            var radius = element.FindPropertyRelative("m_Radius");
+            var direction = element.FindPropertyRelative("m_Direction");
+            var maxDistance = element.FindPropertyRelative("m_MaxDistance");
+
+            if (GUILayout.Button("Round Values .0", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+                origin.vector3Value = new Vector3(
+                    Mathf.Round(origin.vector3Value.x * 10) / 10,
+                    Mathf.Round(origin.vector3Value.y * 10) / 10,
+                    Mathf.Round(origin.vector3Value.z * 10) / 10
+                );
+                direction.vector3Value = new Vector3(
+                    Mathf.Round(direction.vector3Value.x * 10) / 10,
+                    Mathf.Round(direction.vector3Value.y * 10) / 10,
+                    Mathf.Round(direction.vector3Value.z * 10) / 10
+                );
+                maxDistance.floatValue = Mathf.Round(maxDistance.floatValue * 10) / 10;
+                radius.floatValue = Mathf.Round(radius.floatValue * 10) / 10;
+            }
+
+            if (GUILayout.Button("Round Values .00", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+                origin.vector3Value = new Vector3(
+                    Mathf.Round(origin.vector3Value.x * 100) / 100,
+                    Mathf.Round(origin.vector3Value.y * 100) / 100,
+                    Mathf.Round(origin.vector3Value.z * 100) / 100
+                );
+                direction.vector3Value = new Vector3(
+                    Mathf.Round(direction.vector3Value.x * 100) / 100,
+                    Mathf.Round(direction.vector3Value.y * 100) / 100,
+                    Mathf.Round(direction.vector3Value.z * 100) / 100
+                );
+                maxDistance.floatValue = Mathf.Round(maxDistance.floatValue * 100) / 100;
+                radius.floatValue = Mathf.Round(radius.floatValue * 100) / 100;
+            }
+        }
+
         if (GUILayout.Button("Clear", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
             for (int i = 0; i < manager.items.Length; i++) {
                 var item = manager.items[i];
