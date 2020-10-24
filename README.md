@@ -12,9 +12,9 @@ Unity Raycast Manager
 # Features
 [![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]()
 
-- Edit in SceneView
+- In SceneView Editing
 - SceneView Tool: Test Single Cast Item, Test All Cast Items
-- Visualisation: Normals, GameObject Name, Position
+- Visualisation: Colors, Normals, Hit GameObject Name, Hit Positions
 - Support Types: 
         Raycast,
         RaycastAll,
@@ -28,6 +28,8 @@ Unity Raycast Manager
         BoxCast,
         BoxCastAll,
         BoxCastNonAlloc
+- Define Expectetions
+- Use your own RaycastHit Adapter
 
 [![inspector](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/enraycastmanager.inspector.png)]()
 
