@@ -1,8 +1,13 @@
 # EnRaycastManager
 Unity Raycast Manager
 
-[![version](https://img.shields.io/github/package-json/v/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)]()
-[![license](https://img.shields.io/github/license/echtnice/com.echtnice.enraycastmanager?style=for-the-badge)](./LICENSE)
+<!--- [![license](https://img.shields.io/github/license/echtnice/EnRaycastManager?style=for-the-badge)](./LICENSE) -->
+[![repo-size](https://img.shields.io/github/repo-size/echtnice/EnRaycastManager?label=File%20size&style=for-the-badge)]()
+[![version](https://img.shields.io/github/package-json/v/echtnice/EnRaycastManager?style=for-the-badge)]()
+[![last-commit](https://img.shields.io/github/last-commit/echtnice/EnRaycastManager?style=for-the-badge)]()
+[![license](https://img.shields.io/badge/LICENSE-MIT-brightbreen?style=for-the-badge)](./LICENSE)
+[![size](https://img.shields.io/github/package-json/keywords/echtnice/EnRaycastManager?style=for-the-badge)]()
+[![twitter](https://img.shields.io/twitter/follow/echtnice?style=for-the-badge)]()
 
 # Features
 [![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]()
