@@ -7,7 +7,9 @@ Unity Raycast Manager
 [![last-commit](https://img.shields.io/github/last-commit/echtnice/EnRaycastManager?style=for-the-badge)]()
 [![license](https://img.shields.io/badge/LICENSE-MIT-brightbreen?style=for-the-badge)](./LICENSE)
 [![size](https://img.shields.io/github/package-json/keywords/echtnice/EnRaycastManager?style=for-the-badge)]()
-[![twitter](https://img.shields.io/twitter/follow/echtnice?style=for-the-badge)]()
+
+<a href="https://twitter.com/echtnice" class="twitter-follow-button" data-show-count="true" data-size="large">[![twitter](https://img.shields.io/twitter/follow/echtnice?style=for-the-badge)]()</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 # Features
 [![sceneview](https://media.githubusercontent.com/media/ECHTNICE/EnRaycastManager/main/Documentation~/sceneview.enraycastmanager.png)]()
