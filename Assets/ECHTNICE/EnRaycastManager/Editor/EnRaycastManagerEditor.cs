@@ -549,23 +549,37 @@ public class EnRaycastManagerEditor : Editor {
             var item = manager.items[list.index];
             if (item.RaycastMethod(manager, manager.m_LayerMask))
             {
-                if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts)
+                if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
                 {
-                    manager.m_Collider = item.m_RaycastHit.collider;
+                    manager.m_Collider1 = item.m_RaycastHit1.collider;
+                }
+                if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) {
+                    manager.m_Collider2 = item.m_RaycastHit2.collider;
+                }
+                if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) {
+                    manager.m_Collider3 = item.m_RaycastHit3.collider;
                 }
             }
             manager.items[list.index] = item;
         }
 
         if (GUILayout.Button("Test Raycasts", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
-            RaycastHit raycastHit = new RaycastHit();
+
             bool success = true;
             for (int i = 0; i < manager.items.Length; i++) {
                 var item = manager.items[i];
                 if (item.RaycastMethod(manager, manager.m_LayerMask)) {
-                    if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
-                        manager.m_RaycastHit = raycastHit;
-                        manager.m_Collider = raycastHit.collider;
+                    if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) {
+                        manager.m_RaycastHit1 = item.m_RaycastHit1;
+                        manager.m_Collider1 = item.m_RaycastHit1.collider;
+                    }
+                    if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) {
+                        manager.m_RaycastHit2 = item.m_RaycastHit2;
+                        manager.m_Collider2 = item.m_RaycastHit2.collider;
+                    }
+                    if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) {
+                        manager.m_RaycastHit3 = item.m_RaycastHit3;
+                        manager.m_Collider3 = item.m_RaycastHit3.collider;
                     }
                 }
                 if (!item.Success && success) {

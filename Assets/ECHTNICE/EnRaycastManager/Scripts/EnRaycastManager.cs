@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Add type: https://documentation.help/Rotorz.ReorderableList/aa178158-c17c-4f27-8994-8355807868c0.htm
 
+
+
+
 [CanEditMultipleObjects]
 public class EnRaycastManager : MonoBehaviour {
+
+
 
     [Flags]
     public enum DrawType {
@@ -55,7 +64,7 @@ public class EnRaycastManager : MonoBehaviour {
     public int m_Priority;
     public RaycastMethodType m_RaycastMethodType = RaycastMethodType.Update;
     public LayerMask m_LayerMask = ~0;
-    public QueryTriggerInteraction m_QueryTriggerInteraction = QueryTriggerInteraction.UseGlobal;
+    public QueryTriggerInteraction m_QueryTriggerInteraction = QueryTriggerInteraction.Ignore;
     public bool m_RaycastAllwaysAllItems;
 
 
@@ -65,7 +74,7 @@ public class EnRaycastManager : MonoBehaviour {
     public RaycastAdapter m_RaycastAdapter;
 #endif
 #if FIRST_PERSON_CONTROLLER || THIRD_PERSON_CONTROLLER
-    public int m_ObjectID;
+    public int m_ObjectID = -1;
 #endif
 
     public Color m_ExpectedCollisionColor = Color.green;
@@ -84,49 +93,146 @@ public class EnRaycastManager : MonoBehaviour {
     public float m_DrawPointSize = 0.5f;
 
     [Header("Raycast Result")] [EnReadOnly] public bool m_Success;
-    [EnReadOnly] public Collider m_Collider;
-    public RaycastHit m_RaycastHit;
+
+    [EnReadOnly] public Collider m_Collider1;
+    [EnReadOnly] public Collider m_Collider2;
+    [EnReadOnly] public Collider m_Collider3;
+
+    public RaycastHit m_RaycastHit1;
+    public RaycastHit m_RaycastHit2;
+    public RaycastHit m_RaycastHit3;
+
     public RaycastHit[] m_RaycastHits;
 
     [HideInInspector]
     public EnRaycast[] items;
 
+    public bool Success {
+        get => m_Success;
+    }
+
+    public RaycastHit RaycastHit1 {
+        get => m_RaycastHit1;
+    }
+    public RaycastHit RaycastHit2 {
+        get => m_RaycastHit2;
+    }
+    public RaycastHit RaycastHit3 {
+        get => m_RaycastHit3;
+    }
+
+    public GameObject DetectedObject1 {
+        get => m_RaycastHit1.collider ? m_RaycastHit1.collider.gameObject : null;
+    }
+    public GameObject DetectedObject2 {
+        get => m_RaycastHit2.collider ? m_RaycastHit2.collider.gameObject : null;
+    }
+    public GameObject DetectedObject3 {
+        get => m_RaycastHit3.collider ? m_RaycastHit3.collider.gameObject : null;
+    }
 
     // Update is called once per frame
     void Update() {
         if (m_RaycastMethodType == RaycastMethodType.Update) {
-            RaycastMethod();
+            RaycastCheck();
         }
     }
 
     void FixedUpdate() {
         if (m_RaycastMethodType == RaycastMethodType.FixedUpdate) {
-            RaycastMethod();
+            RaycastCheck();
         }
     }
 
     void LateUpdate() {
         if (m_RaycastMethodType == RaycastMethodType.LateUpdate) {
-            RaycastMethod();
+            RaycastCheck();
         }
     }
 
-    void RaycastMethod() {
+    public string Copy() {
+        string json = JsonUtility.ToJson(this);
+        GUIUtility.systemCopyBuffer = json;
+        return json;
+    }
+
+    public void Paste() {
+        string json = GUIUtility.systemCopyBuffer;
+        Paste(json);
+    }
+
+    public void Paste(string json) {
+        var gameObject = new GameObject("Temp");
+        EnRaycastManager jsonEnRaycastManager = gameObject.AddComponent<EnRaycastManager>();
+        JsonUtility.FromJsonOverwrite(json, jsonEnRaycastManager);
+        if (jsonEnRaycastManager != null) {
+            items = jsonEnRaycastManager.items.ToArray();
+            m_ID = jsonEnRaycastManager.m_ID + 1;
+            m_Priority = jsonEnRaycastManager.m_Priority;
+            m_LayerMask = jsonEnRaycastManager.m_LayerMask;
+            m_RaycastMethodType = jsonEnRaycastManager.m_RaycastMethodType;
+            m_QueryTriggerInteraction = jsonEnRaycastManager.m_QueryTriggerInteraction;
+            m_RaycastAllwaysAllItems = jsonEnRaycastManager.m_RaycastAllwaysAllItems;
+            m_ExpectedCollisionColor = jsonEnRaycastManager.m_ExpectedCollisionColor;
+            m_NotExpectedCollisionColor = jsonEnRaycastManager.m_NotExpectedCollisionColor;
+            m_ExpectedNoCollisionColor = jsonEnRaycastManager.m_ExpectedNoCollisionColor;
+            m_HideDefaultHandle = jsonEnRaycastManager.m_HideDefaultHandle;
+            m_ShowRaycastTool = jsonEnRaycastManager.m_ShowRaycastTool;
+            m_DrawType = jsonEnRaycastManager.m_DrawType;
+            m_DrawWireView = jsonEnRaycastManager.m_DrawWireView;
+            m_DrawNormals = jsonEnRaycastManager.m_DrawNormals;
+            m_DrawText = jsonEnRaycastManager.m_DrawText;
+            m_DrawPointSize = jsonEnRaycastManager.m_DrawPointSize;
+        }
+        GameObject.DestroyImmediate(gameObject);
+    }
+
+    public UnityEvent<EnRaycastEventData> BeforRaycastCheck;
+
+    public void Clear() {
+        for (int i = 0; i < items.Length; i++) {
+            items[i].Clear();
+        }
+    }
+
+    public bool RaycastCheck() {
+        var success = true;
+        Clear();
         for (int i = 0; i < items.Length; i++) {
             var item = items[i];
+            item.Index = i;
             if (item.RaycastMethod(this, m_LayerMask)) {
-                if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
-                    m_Collider = m_RaycastHit.collider;
-                    m_RaycastHit = item.m_RaycastHit;
+                if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) {
+                    m_RaycastHit1 = item.m_RaycastHit1;
+                    m_Collider1 = item.m_RaycastHit1.collider;
+                }
+                if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) {
+                    m_RaycastHit2 = item.m_RaycastHit2;
+                    m_Collider2 = item.m_RaycastHit2.collider;
+                }
+                if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) {
+                    m_RaycastHit3 = item.m_RaycastHit3;
+                    m_Collider3 = item.m_RaycastHit3.collider;
                 }
             }
+
+            if (!item.Success) {
+                success = false;
+                if (!m_RaycastAllwaysAllItems) {
+                    break;
+                }
+            }
+
             items[i] = item;
         }
+        m_Success = success;
+
 #if UNITY_EDITOR
         if ((m_DrawType & DrawType.RunTime) == DrawType.RunTime) {
             Draw();
         }
 #endif
+        return success;
     }
 
 #if UNITY_EDITOR
@@ -227,20 +333,77 @@ public class EnRaycastManager : MonoBehaviour {
                         break;
                 }
 
-                if (item.Result && item.m_RaycastHit.collider != null) {
+                if (item.Result && item.m_RaycastHit1.collider != null) {
                     var color = item.Result ? item.Success ? m_ExpectedCollisionColor : m_NotExpectedCollisionColor : m_ExpectedNoCollisionColor;
-                    EnDebugExtension.DrawPoint(item.m_RaycastHit.point, color, m_DrawPointSize);
+                    EnDebugExtension.DrawPoint(item.m_RaycastHit1.point, color, m_DrawPointSize);
                 }
-                if (m_DrawNormals && item.Result && item.m_RaycastHit.collider != null) {
-                    EnDebugExtension.DrawArrow(item.m_RaycastHit.point, item.m_RaycastHit.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                if (m_DrawNormals && item.Result && item.m_RaycastHit1.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit1.point, item.m_RaycastHit1.normal * m_DrawPointSize, m_ExpectedCollisionColor);
                 }
-                if (m_DrawNormals && m_DrawText && item.Result && item.m_RaycastHit.collider != null) {
-                    EnDebugExtension.DrawArrow(item.m_RaycastHit.point, item.m_RaycastHit.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                if (m_DrawNormals && m_DrawText && item.Result && item.m_RaycastHit1.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit1.point, item.m_RaycastHit1.normal * m_DrawPointSize, m_ExpectedCollisionColor);
                     GUIStyle style = new GUIStyle();
                     style.normal.textColor = Color.black;
-                    UnityEditor.Handles.Label(item.m_RaycastHit.point+Vector3.up*0.05f, item.m_RaycastHit.collider.gameObject.name + " " + item.m_RaycastHit.point, style);
+                    UnityEditor.Handles.Label(item.m_RaycastHit1.point + Vector3.up * 0.05f, item.m_RaycastHit1.collider.gameObject.name + " " + item.m_RaycastHit1.point, style);
+                }
+
+                if (item.Result && item.m_RaycastHit2.collider != null) {
+                    var color = item.Result ? item.Success ? m_ExpectedCollisionColor : m_NotExpectedCollisionColor : m_ExpectedNoCollisionColor;
+                    EnDebugExtension.DrawPoint(item.m_RaycastHit2.point, color, m_DrawPointSize);
+                }
+                if (m_DrawNormals && item.Result && item.m_RaycastHit2.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit2.point, item.m_RaycastHit2.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                }
+                if (m_DrawNormals && m_DrawText && item.Result && item.m_RaycastHit2.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit2.point, item.m_RaycastHit2.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                    GUIStyle style = new GUIStyle();
+                    style.normal.textColor = Color.black;
+                    UnityEditor.Handles.Label(item.m_RaycastHit2.point + Vector3.up * 0.05f, item.m_RaycastHit2.collider.gameObject.name + " " + item.m_RaycastHit2.point, style);
+                }
+
+                if (item.Result && item.m_RaycastHit3.collider != null) {
+                    var color = item.Result ? item.Success ? m_ExpectedCollisionColor : m_NotExpectedCollisionColor : m_ExpectedNoCollisionColor;
+                    EnDebugExtension.DrawPoint(item.m_RaycastHit3.point, color, m_DrawPointSize);
+                }
+                if (m_DrawNormals && item.Result && item.m_RaycastHit3.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit3.point, item.m_RaycastHit3.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                }
+                if (m_DrawNormals && m_DrawText && item.Result && item.m_RaycastHit3.collider != null) {
+                    EnDebugExtension.DrawArrow(item.m_RaycastHit3.point, item.m_RaycastHit3.normal * m_DrawPointSize, m_ExpectedCollisionColor);
+                    GUIStyle style = new GUIStyle();
+                    style.normal.textColor = Color.black;
+                    UnityEditor.Handles.Label(item.m_RaycastHit3.point + Vector3.up * 0.05f, item.m_RaycastHit3.collider.gameObject.name + " " + item.m_RaycastHit3.point, style);
                 }
             }
     }
 #endif
+    public static void InitEnRaycastManagerPropertyAttributes(GameObject go, object obj) {
+        var type = obj.GetType();
+        var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        var root = go.transform.Find("EnRaycasts");
+        if (!root) {
+            Debug.LogError("Can't find EnRaycasts GameObject.");
+        }
+
+        IEnumerable<EnRaycastManagerPropertyAttribute> attributes;
+        for (int i = 0; i < fields.Length; i++) {
+            var field = fields[i];
+            attributes = field.GetCustomAttributes<EnRaycastManagerPropertyAttribute>();
+            foreach (var attr in attributes) {
+                if (field.GetValue(obj) != null)
+                    break;
+                var fieldName = field.Name;
+                if (fieldName.StartsWith("m_"))
+                    fieldName = fieldName.Remove(0, 2);
+                var item = root.transform.Find(fieldName);
+                if (!item) {
+                    var gameobjectItem = new GameObject(fieldName);
+                    gameobjectItem.transform.parent = root;
+                    var manager = gameobjectItem.AddComponent<EnRaycastManager>();
+                    manager.Paste(attr.Json);
+                    field.SetValue(obj, manager);
+                }
+            }
+        }
+    }
 }

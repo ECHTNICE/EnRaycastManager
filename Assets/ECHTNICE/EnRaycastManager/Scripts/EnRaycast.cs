@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public struct EnRaycast {
@@ -23,7 +24,9 @@ public struct EnRaycast {
 
     public enum Expect {
         Collision,
-        CollisionOverrideRaycasts,
+        CollisionOverrideRaycastHit1,
+        CollisionOverrideRaycastHit2,
+        CollisionOverrideRaycastHit3,
         NoCollision
     }
 
@@ -35,8 +38,7 @@ public struct EnRaycast {
     public bool Result; // 
     public bool Success; // 
 
-    public int level; // Level of the enemy.
-    public int quantity; // How many enemies of this type should we spawn?
+    public int Index; // Index
 
 
     public Vector3 m_Origin;
@@ -61,6 +63,9 @@ public struct EnRaycast {
 
     public Color m_Color;
     public RaycastHit m_RaycastHit;
+    public RaycastHit m_RaycastHit1;
+    public RaycastHit m_RaycastHit2;
+    public RaycastHit m_RaycastHit3;
     public RaycastHit[] m_RaycastAllHits;
     public RaycastHit[] m_RaycastAllNonAllocHits;
     public int m_RaycastAlloNonHitCount;
@@ -68,8 +73,13 @@ public struct EnRaycast {
         Executed = false;
         Result = false;
         Success = false;
-        m_RaycastHit = default(RaycastHit);
+        m_RaycastHit1 = default(RaycastHit);
+        m_RaycastHit2 = default(RaycastHit);
+        m_RaycastHit3 = default(RaycastHit);
     }
+
+    
+    private EnRaycastEventData enRaycastEventData;
 
     public bool RaycastMethod(EnRaycastManager manager, LayerMask layerMask) {
         if (m_RaycastAllNonAllocHits == null)
@@ -80,6 +90,15 @@ public struct EnRaycast {
 
         var worldOrigin = EnDebugExtension.RotatePoint(transform, transform.position + m_Origin);
         var worldDirection = EnDebugExtension.RotateDirection(transform, m_Direction);
+        
+        if(enRaycastEventData==null)
+            enRaycastEventData = new EnRaycastEventData(manager,this);
+        enRaycastEventData.Position = worldOrigin;
+        enRaycastEventData.Rotation = worldDirection;
+        manager.BeforRaycastCheck.Invoke(enRaycastEventData);
+        worldOrigin = enRaycastEventData.Position;
+        worldDirection = enRaycastEventData.Rotation;
+
         Vector3 axisDirection = Vector3.zero;
         var adapter = manager.GetRaycastAdapter();
         switch (m_Type) {
@@ -169,12 +188,30 @@ public struct EnRaycast {
             case RaycastType.BoxCast:
                 if (adapter != null &&
                     manager.m_RaycastAdapter != EnRaycastManager.RaycastAdapter.None &&
-                    Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
-                    Result = adapter.FilterRaycastHit(manager, this, m_RaycastHit, ref m_RaycastHit);
+                    Result && (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1
+                    || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2
+                    || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)) {
+
+                    if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        Result = adapter.FilterRaycastHit(manager, this, m_RaycastHit, ref m_RaycastHit1);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        Result = adapter.FilterRaycastHit(manager, this, m_RaycastHit, ref m_RaycastHit2);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        Result = adapter.FilterRaycastHit(manager, this, m_RaycastHit, ref m_RaycastHit3);
+                }
+                else if(Result) {
+                    if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        m_RaycastHit1 = m_RaycastHit;
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        m_RaycastHit2 = m_RaycastHit;
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        m_RaycastHit3 = m_RaycastHit;
                 }
                 Success =
                     (Result && m_Expect == EnRaycast.Expect.Collision) ||
-                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) ||
                     (!Result && m_Expect == EnRaycast.Expect.NoCollision);
                 break;
             case RaycastType.RaycastAll:
@@ -183,17 +220,32 @@ public struct EnRaycast {
             case RaycastType.BoxCastAll:
                 if (adapter != null &&
                     manager.m_RaycastAdapter != EnRaycastManager.RaycastAdapter.None &&
-                    Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
-                    Result = adapter.FilterRaycastHitsAll(manager, this, m_RaycastAllHits, ref m_RaycastHit);
+                    Result && (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1
+                               || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2
+                               || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)) {
+                    if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        Result = adapter.FilterRaycastHitsAll(manager, this, m_RaycastAllHits, ref m_RaycastHit1);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        Result = adapter.FilterRaycastHitsAll(manager, this, m_RaycastAllHits, ref m_RaycastHit2);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        Result = adapter.FilterRaycastHitsAll(manager, this, m_RaycastAllHits, ref m_RaycastHit3);
                 }
                 else {
                     Result = m_RaycastAllHits.Length > 0;
-                    if (Result)
-                        m_RaycastHit = m_RaycastAllHits.FirstOrDefault();
+                    if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        m_RaycastHit1 = m_RaycastAllHits.FirstOrDefault();
+                    else if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        m_RaycastHit2 = m_RaycastAllHits.FirstOrDefault();
+                    else if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        m_RaycastHit3 = m_RaycastAllHits.FirstOrDefault();
+                    else if(Result)
+                         m_RaycastHit = m_RaycastAllHits.FirstOrDefault();
                 }
                 Success =
                     (Result && m_Expect == EnRaycast.Expect.Collision) ||
-                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) ||
                     (!Result && m_Expect == EnRaycast.Expect.NoCollision);
                 break;
             case RaycastType.RaycastNonAlloc:
@@ -202,18 +254,36 @@ public struct EnRaycast {
             case RaycastType.BoxCastNonAlloc:
                 if (adapter != null &&
                     manager.m_RaycastAdapter != EnRaycastManager.RaycastAdapter.None &&
-                    Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
-                    Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
-                        m_RaycastAllNonAllocHits, ref m_RaycastHit);
+                    Result && (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1
+                               || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2
+                               || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)) {
+                    if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                            m_RaycastAllNonAllocHits, ref m_RaycastHit1);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                            m_RaycastAllNonAllocHits, ref m_RaycastHit2);
+                    else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                            m_RaycastAllNonAllocHits, ref m_RaycastHit3);
                 }
                 else {
+
                     Result = m_RaycastAlloNonHitCount > 0;
-                    if (Result)
+                    if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
+                        m_RaycastHit1 = m_RaycastAllNonAllocHits.FirstOrDefault();
+                    else if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
+                        m_RaycastHit2 = m_RaycastAllNonAllocHits.FirstOrDefault();
+                    else if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
+                        m_RaycastHit3 = m_RaycastAllNonAllocHits.FirstOrDefault();
+                    else if (Result)
                         m_RaycastHit = m_RaycastAllNonAllocHits.FirstOrDefault();
                 }
                 Success =
                     (Result && m_Expect == EnRaycast.Expect.Collision) ||
-                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2) ||
+                    (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3) ||
                     (!Result && m_Expect == EnRaycast.Expect.NoCollision);
                 break;
         }
