@@ -1,5 +1,4 @@
-# EnRaycastManager
-Unity Raycast Manager
+# Unity EnRaycastManager
 
 <!--- [![license](https://img.shields.io/github/license/echtnice/EnRaycastManager?style=for-the-badge)](./LICENSE) -->
 [![repo-size](https://img.shields.io/github/repo-size/echtnice/EnRaycastManager?label=File%20size&style=for-the-badge)]()
