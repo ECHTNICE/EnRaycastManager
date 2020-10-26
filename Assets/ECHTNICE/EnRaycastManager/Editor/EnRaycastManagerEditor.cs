@@ -349,7 +349,7 @@ public class EnRaycastManagerEditor : Editor {
         var defaultBackgroundColor = GUI.backgroundColor;
         var editable = ((EnRaycastManager)target).m_Editable;
         GUI.backgroundColor = editable ? Color.gray : Color.green;
-        if (GUILayout.Button(editable ? "Stop" : "Editing")) {
+        if (GUILayout.Button(editable ? "Disable Editing" : "Editing")) {
             ((EnRaycastManager)target).m_Editable = !editable;
         }
         GUI.color = defaultColor;
@@ -538,7 +538,7 @@ public class EnRaycastManagerEditor : Editor {
         var defaultBackgroundColor = GUI.backgroundColor;
         var editable = manager.m_Editable;
         GUI.backgroundColor = editable ? Color.gray : Color.green+ Color.green*0.2f;
-        if (GUILayout.Button(editable ? "Stop" : "Editing", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
+        if (GUILayout.Button(editable ? "Disable Editing" : "Editing", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
             manager.m_Editable = !editable;
         }
         GUI.color = defaultColor;
@@ -547,8 +547,13 @@ public class EnRaycastManagerEditor : Editor {
         if (GUILayout.Button("Test Raycast", buttonStyle, GUILayout.Width(200), GUILayout.Height(20))) {
             RaycastHit raycastHit = new RaycastHit();
             var item = manager.items[list.index];
-            if (item.RaycastMethod(manager, manager.transform, manager.m_LayerMask, out raycastHit))
-                manager.m_Collider = raycastHit.collider;
+            if (item.RaycastMethod(manager, manager.m_LayerMask))
+            {
+                if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts)
+                {
+                    manager.m_Collider = item.m_RaycastHit.collider;
+                }
+            }
             manager.items[list.index] = item;
         }
 
@@ -557,7 +562,7 @@ public class EnRaycastManagerEditor : Editor {
             bool success = true;
             for (int i = 0; i < manager.items.Length; i++) {
                 var item = manager.items[i];
-                if (item.RaycastMethod(manager, manager.transform, manager.m_LayerMask, out raycastHit)) {
+                if (item.RaycastMethod(manager, manager.m_LayerMask)) {
                     if (item.Success && item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
                         manager.m_RaycastHit = raycastHit;
                         manager.m_Collider = raycastHit.collider;

@@ -24,9 +24,31 @@ public class EnRaycastManager : MonoBehaviour {
 
     public enum RaycastAdapter {
         None,
+        ClosestPoint,
 #if FIRST_PERSON_CONTROLLER || THIRD_PERSON_CONTROLLER
-      Opsive,
+        Opsive,
 #endif
+        Custom
+    }
+
+    private IRaycastAdapter m_CurrentRaycastAdapter;
+    public virtual IRaycastAdapter GetRaycastAdapter() {
+        switch (m_RaycastAdapter) {
+            case RaycastAdapter.ClosestPoint:
+                if (m_CurrentRaycastAdapter == null)
+                    m_CurrentRaycastAdapter = new EnClosestPointAdapter();
+                return m_CurrentRaycastAdapter;
+#if FIRST_PERSON_CONTROLLER || THIRD_PERSON_CONTROLLER
+            case RaycastAdapter.Opsive:
+                if (m_CurrentRaycastAdapter == null)
+                    m_CurrentRaycastAdapter = new EnOpsiveRaycastAdapter();
+                return m_CurrentRaycastAdapter;
+#endif
+            case RaycastAdapter.Custom:
+                Debug.LogError("you need to override EnRaycastManager.GetRaycastAdapter method for custom adapter.");
+                break;
+        }
+        return null;
     }
 
     public int m_ID;
@@ -92,7 +114,7 @@ public class EnRaycastManager : MonoBehaviour {
     void RaycastMethod() {
         for (int i = 0; i < items.Length; i++) {
             var item = items[i];
-            if (item.RaycastMethod(this, transform, m_LayerMask, out m_RaycastHit)) {
+            if (item.RaycastMethod(this, m_LayerMask)) {
                 if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycasts) {
                     m_Collider = m_RaycastHit.collider;
                     m_RaycastHit = item.m_RaycastHit;
