@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,9 +26,24 @@ public struct EnRaycast {
         CollisionOverrideRaycastHit1,
         CollisionOverrideRaycastHit2,
         CollisionOverrideRaycastHit3,
-        NoCollision
+        NoCollision,
+        Ignore
     }
 
+    public enum HeightAxis {
+        /// <summary>
+        ///   <para>X-axis.</para>
+        /// </summary>
+        X,
+        /// <summary>
+        ///   <para>Y-axis.</para>
+        /// </summary>
+        Y,
+        /// <summary>
+        ///   <para>Z-axis.</para>
+        /// </summary>
+        Z,
+    }
 
     public RaycastType m_Type;
     public Expect m_Expect;
@@ -42,7 +56,8 @@ public struct EnRaycast {
 
 
     public Vector3 m_Origin;
-    public CapsuleBoundsHandle.HeightAxis m_HeightAxis;// capsule
+    public Vector3 m_OriginModified;
+    public HeightAxis m_HeightAxis;// capsule
     public float m_Radius; // SphereCast & 
     public float m_Height; // capsule
     public Vector3 m_Size;
@@ -76,6 +91,7 @@ public struct EnRaycast {
         m_RaycastHit1 = default(RaycastHit);
         m_RaycastHit2 = default(RaycastHit);
         m_RaycastHit3 = default(RaycastHit);
+        //m_OriginModified = Vector3.zero;
     }
 
     
@@ -96,8 +112,11 @@ public struct EnRaycast {
         enRaycastEventData.Position = worldOrigin;
         enRaycastEventData.Rotation = worldDirection;
         manager.BeforRaycastCheck.Invoke(enRaycastEventData);
+        m_OriginModified = enRaycastEventData.Position - worldOrigin;
         worldOrigin = enRaycastEventData.Position;
         worldDirection = enRaycastEventData.Rotation;
+
+
 
         Vector3 axisDirection = Vector3.zero;
         var adapter = manager.GetRaycastAdapter();
@@ -113,13 +132,13 @@ public struct EnRaycast {
                 break;
             case EnRaycast.RaycastType.CapsuleCast:
                 switch (m_HeightAxis) {
-                    case CapsuleBoundsHandle.HeightAxis.X:
+                    case HeightAxis.X:
                         axisDirection = transform.rotation * Vector3.right * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Y:
+                    case HeightAxis.Y:
                         axisDirection = transform.rotation * Vector3.up * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Z:
+                    case HeightAxis.Z:
                         axisDirection = transform.rotation * Vector3.forward * m_Height / 2;
                         break;
                 }
@@ -129,13 +148,13 @@ public struct EnRaycast {
                 break;
             case EnRaycast.RaycastType.CapsuleCastAll:
                 switch (m_HeightAxis) {
-                    case CapsuleBoundsHandle.HeightAxis.X:
+                    case HeightAxis.X:
                         axisDirection = transform.rotation * Vector3.right * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Y:
+                    case HeightAxis.Y:
                         axisDirection = transform.rotation * Vector3.up * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Z:
+                    case HeightAxis.Z:
                         axisDirection = transform.rotation * Vector3.forward * m_Height / 2;
                         break;
                 }
@@ -146,13 +165,13 @@ public struct EnRaycast {
             case EnRaycast.RaycastType.CapsuleCastNonAlloc:
 
                 switch (m_HeightAxis) {
-                    case CapsuleBoundsHandle.HeightAxis.X:
+                    case HeightAxis.X:
                         axisDirection = transform.rotation * Vector3.right * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Y:
+                    case HeightAxis.Y:
                         axisDirection = transform.rotation * Vector3.up * m_Height / 2;
                         break;
-                    case CapsuleBoundsHandle.HeightAxis.Z:
+                    case HeightAxis.Z:
                         axisDirection = transform.rotation * Vector3.forward * m_Height / 2;
                         break;
                 }
@@ -167,7 +186,7 @@ public struct EnRaycast {
                 m_RaycastAllHits = Physics.SphereCastAll(worldOrigin, m_Radius, worldDirection, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.SphereCastNonAlloc:
-                m_RaycastAlloNonHitCount = Physics.SphereCastNonAlloc(worldOrigin, m_Radius, worldDirection, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
+                m_RaycastAlloNonHitCount = Physics.SphereCastNonAlloc(worldOrigin, m_Radius, worldDirection.normalized, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.BoxCast:
                 Result = Physics.BoxCast(worldOrigin, m_Size, worldDirection, out m_RaycastHit, Quaternion.Euler(worldDirection), m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);

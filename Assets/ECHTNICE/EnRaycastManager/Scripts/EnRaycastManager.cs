@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Events;
 
 // Add type: https://documentation.help/Rotorz.ReorderableList/aa178158-c17c-4f27-8994-8355807868c0.htm
 
 
-
-
-[CanEditMultipleObjects]
 public class EnRaycastManager : MonoBehaviour {
 
 
@@ -189,7 +184,14 @@ public class EnRaycastManager : MonoBehaviour {
 
     public UnityEvent<EnRaycastEventData> BeforRaycastCheck;
 
-    public void Clear() {
+    public void Clear()
+    {
+        m_RaycastHit1 = default(RaycastHit);
+        m_RaycastHit2 = default(RaycastHit);
+        m_RaycastHit3 = default(RaycastHit);
+        m_Collider1 = null;
+        m_Collider1 = null;
+        m_Collider1 = null;
         for (int i = 0; i < items.Length; i++) {
             items[i].Clear();
         }
@@ -201,6 +203,11 @@ public class EnRaycastManager : MonoBehaviour {
         for (int i = 0; i < items.Length; i++) {
             var item = items[i];
             item.Index = i;
+            if (item.m_Expect == EnRaycast.Expect.Ignore)
+            {
+                continue;
+            }
+
             if (item.RaycastMethod(this, m_LayerMask)) {
                 if (item.m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1) {
                     m_RaycastHit1 = item.m_RaycastHit1;
@@ -227,11 +234,11 @@ public class EnRaycastManager : MonoBehaviour {
         }
         m_Success = success;
 
-#if UNITY_EDITOR
-        if ((m_DrawType & DrawType.RunTime) == DrawType.RunTime) {
-            Draw();
-        }
-#endif
+//#if UNITY_EDITOR
+//        if ((m_DrawType & DrawType.RunTime) == DrawType.RunTime) {
+//            Draw();
+//        }
+//#endif
         return success;
     }
 
@@ -256,12 +263,27 @@ public class EnRaycastManager : MonoBehaviour {
                 var worldOrigin = EnDebugExtension.RotatePoint(transform, transform.position + item.m_Origin);
                 var worldDirection = EnDebugExtension.RotateDirection(transform, item.m_Direction);
 
-                Gizmos.DrawLine(worldOrigin,
-                    worldOrigin + worldDirection * item.m_MaxDistance
-                );
-                EnDebugExtension.DrawArrow(worldOrigin + worldDirection * item.m_MaxDistance
-                                           - worldDirection * m_DrawPointSize,
-                    worldDirection * m_DrawPointSize, Gizmos.color);
+                if (item.m_OriginModified.magnitude > float.Epsilon)
+                {
+                    worldOrigin = EnDebugExtension.RotatePoint(transform, transform.position + item.m_Origin + item.m_OriginModified);
+                    worldDirection = EnDebugExtension.RotateDirection(transform, item.m_Direction);
+
+                    Gizmos.DrawLine(worldOrigin,
+                        worldOrigin + worldDirection * item.m_MaxDistance
+                    );
+                    EnDebugExtension.DrawArrow(worldOrigin + worldDirection * item.m_MaxDistance
+                                               - worldDirection * m_DrawPointSize,
+                        worldDirection * m_DrawPointSize, Gizmos.color);
+                }
+                else
+                {
+                    Gizmos.DrawLine(worldOrigin,
+                        worldOrigin + worldDirection * item.m_MaxDistance
+                    );
+                    EnDebugExtension.DrawArrow(worldOrigin + worldDirection * item.m_MaxDistance
+                                               - worldDirection * m_DrawPointSize,
+                        worldDirection * m_DrawPointSize, Gizmos.color);
+                }
 
 
 
@@ -292,13 +314,13 @@ public class EnRaycastManager : MonoBehaviour {
                     case EnRaycast.RaycastType.CapsuleCastNonAlloc:
                         Vector3 axisDirection = Vector3.zero;
                         switch (item.m_HeightAxis) {
-                            case CapsuleBoundsHandle.HeightAxis.X:
+                            case EnRaycast.HeightAxis.X:
                                 axisDirection = transform.rotation * Vector3.right * item.m_Height / 2;
                                 break;
-                            case CapsuleBoundsHandle.HeightAxis.Y:
+                            case EnRaycast.HeightAxis.Y:
                                 axisDirection = transform.rotation * Vector3.up * item.m_Height / 2;
                                 break;
-                            case CapsuleBoundsHandle.HeightAxis.Z:
+                            case EnRaycast.HeightAxis.Z:
                                 axisDirection = transform.rotation * Vector3.forward * item.m_Height / 2;
                                 break;
                         }
@@ -399,6 +421,9 @@ public class EnRaycastManager : MonoBehaviour {
                 if (!item) {
                     var gameobjectItem = new GameObject(fieldName);
                     gameobjectItem.transform.parent = root;
+                    gameobjectItem.transform.position = Vector3.zero;
+                    gameobjectItem.transform.rotation = Quaternion.identity;
+                    gameobjectItem.transform.localScale = Vector3.one;
                     var manager = gameobjectItem.AddComponent<EnRaycastManager>();
                     manager.Paste(attr.Json);
                     field.SetValue(obj, manager);

@@ -8,6 +8,7 @@ using Object = UnityEngine.Object;
 
 // Tells Unity to use this Editor class with the WaveManager script component.
 [CustomEditor(typeof(EnRaycastManager))]
+[CanEditMultipleObjects]
 public class EnRaycastManagerEditor : Editor {
     //private GUIStyle buttonStyle;
 
@@ -175,14 +176,14 @@ public class EnRaycastManagerEditor : Editor {
 
         //copy
         if (GUI.Button(new Rect(rect.x + currentViewWidth - 88, rect.y + EditorGUIUtility.singleLineHeight * 2, 44, 18), "copy", GUI.skin.button)) {
-            string json = JsonUtility.ToJson(element);
+            EnRaycastManager manager = (EnRaycastManager)serializedObject.targetObject;
+            string json = JsonUtility.ToJson(manager.items[index]);
             GUIUtility.systemCopyBuffer = json;
         }
         //paste
         if (GUI.Button(new Rect(rect.x + currentViewWidth - 44, rect.y + EditorGUIUtility.singleLineHeight * 2, 44, 18), "paste", GUI.skin.button)) {
             string json = GUIUtility.systemCopyBuffer;
-            EnRaycast enRaycast = default(EnRaycast);
-            JsonUtility.FromJsonOverwrite(json, enRaycast);
+            EnRaycast enRaycast = JsonUtility.FromJson<EnRaycast>(json);//FromJsonOverwrite(json, enRaycast);
             element.FindPropertyRelative("m_Type").enumValueIndex = (int)enRaycast.m_Type;
             element.FindPropertyRelative("m_Expect").enumValueIndex = (int)enRaycast.m_Expect;
             element.FindPropertyRelative("m_Color").colorValue = enRaycast.m_Color;
@@ -382,6 +383,7 @@ public class EnRaycastManagerEditor : Editor {
                 manager.m_DrawNormals = jsonEnRaycastManager.m_DrawNormals;
                 manager.m_DrawText = jsonEnRaycastManager.m_DrawText;
                 manager.m_DrawPointSize = jsonEnRaycastManager.m_DrawPointSize;
+                EditorUtility.SetDirty(manager);
             }
             GameObject.DestroyImmediate(gameObject);
         }
@@ -398,8 +400,8 @@ public class EnRaycastManagerEditor : Editor {
 
 
     public void OnSceneGUI() {
-        if (list.index != -1 && serializedObject != null && serializedObject.targetObject != null) {
-            EnRaycastManager manager = (EnRaycastManager)serializedObject.targetObject;
+        if (list.index != -1 && target != null) {
+            EnRaycastManager manager = (EnRaycastManager)target;
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(list.index);
             if (manager.m_Editable) {
                 //EnRaycast enRaycast = element.
@@ -515,7 +517,7 @@ public class EnRaycastManagerEditor : Editor {
                 serializedObject.ApplyModifiedProperties();
             }
 
-            if (serializedObject != null && serializedObject.targetObject != null) {
+            if (target != null) {
                 Handles.BeginGUI();
                 Rect windowRect = new Rect(Screen.width - 215, Screen.height - 180, 200,
                     EditorGUIUtility.singleLineHeight * 2f);
@@ -530,7 +532,7 @@ public class EnRaycastManagerEditor : Editor {
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
         //GUIStyle textFieldStyle = new GUIStyle(GUI.skin.textField);
         buttonStyle.margin = new RectOffset(0, 5, 2, 0);
-        EnRaycastManager manager = (EnRaycastManager)serializedObject.targetObject;
+        EnRaycastManager manager = (EnRaycastManager)target;
         if (!manager.m_ShowRaycastTool)
             return;
 
