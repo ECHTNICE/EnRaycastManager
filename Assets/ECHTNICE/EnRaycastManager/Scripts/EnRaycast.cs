@@ -83,14 +83,16 @@ public struct EnRaycast {
     public RaycastHit m_RaycastHit3;
     public RaycastHit[] m_RaycastAllHits;
     public RaycastHit[] m_RaycastAllNonAllocHits;
-    public int m_RaycastAlloNonHitCount;
+    public int m_RaycastAllNonHitCount;
+
+    private RaycastHit m_BlankRaycastHit;
     public void Clear() {
         Executed = false;
         Result = false;
         Success = false;
-        m_RaycastHit1 = default(RaycastHit);
-        m_RaycastHit2 = default(RaycastHit);
-        m_RaycastHit3 = default(RaycastHit);
+        m_RaycastHit1 = m_BlankRaycastHit;
+        m_RaycastHit2 = m_BlankRaycastHit;
+        m_RaycastHit3 = m_BlankRaycastHit;
         //m_OriginModified = Vector3.zero;
     }
 
@@ -128,7 +130,7 @@ public struct EnRaycast {
                 m_RaycastAllHits = Physics.RaycastAll(worldOrigin, worldDirection, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.RaycastNonAlloc:
-                m_RaycastAlloNonHitCount = Physics.RaycastNonAlloc(worldOrigin, worldDirection, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
+                m_RaycastAllNonHitCount = Physics.RaycastNonAlloc(worldOrigin, worldDirection, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.CapsuleCast:
                 switch (m_HeightAxis) {
@@ -175,7 +177,7 @@ public struct EnRaycast {
                         axisDirection = transform.rotation * Vector3.forward * m_Height / 2;
                         break;
                 }
-                m_RaycastAlloNonHitCount = Physics.CapsuleCastNonAlloc(worldOrigin + axisDirection,
+                m_RaycastAllNonHitCount = Physics.CapsuleCastNonAlloc(worldOrigin + axisDirection,
                     worldOrigin - axisDirection,
                     m_Radius, worldDirection, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
@@ -186,7 +188,7 @@ public struct EnRaycast {
                 m_RaycastAllHits = Physics.SphereCastAll(worldOrigin, m_Radius, worldDirection, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.SphereCastNonAlloc:
-                m_RaycastAlloNonHitCount = Physics.SphereCastNonAlloc(worldOrigin, m_Radius, worldDirection.normalized, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
+                m_RaycastAllNonHitCount = Physics.SphereCastNonAlloc(worldOrigin, m_Radius, worldDirection.normalized, m_RaycastAllNonAllocHits, m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.BoxCast:
                 Result = Physics.BoxCast(worldOrigin, m_Size, worldDirection, out m_RaycastHit, Quaternion.Euler(worldDirection), m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
@@ -195,7 +197,7 @@ public struct EnRaycast {
                 m_RaycastAllHits = Physics.BoxCastAll(worldOrigin, m_Size, worldDirection, Quaternion.Euler(worldDirection), m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
             case EnRaycast.RaycastType.BoxCastNonAlloc:
-                m_RaycastAlloNonHitCount = Physics.BoxCastNonAlloc(worldOrigin, m_Size, worldDirection, m_RaycastAllNonAllocHits, Quaternion.Euler(worldDirection), m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
+                m_RaycastAllNonHitCount = Physics.BoxCastNonAlloc(worldOrigin, m_Size, worldDirection, m_RaycastAllNonAllocHits, Quaternion.Euler(worldDirection), m_MaxDistance, layerMask, manager.m_QueryTriggerInteraction);
                 break;
         }
 
@@ -277,18 +279,18 @@ public struct EnRaycast {
                                || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2
                                || m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)) {
                     if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
-                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAllNonHitCount,
                             m_RaycastAllNonAllocHits, ref m_RaycastHit1);
                     else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
-                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAllNonHitCount,
                             m_RaycastAllNonAllocHits, ref m_RaycastHit2);
                     else if (m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit3)
-                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAlloNonHitCount,
+                        Result = adapter.FilterRaycastHitsAllNonAlloc(manager, this, m_RaycastAllNonHitCount,
                             m_RaycastAllNonAllocHits, ref m_RaycastHit3);
                 }
                 else {
 
-                    Result = m_RaycastAlloNonHitCount > 0;
+                    Result = m_RaycastAllNonHitCount > 0;
                     if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit1)
                         m_RaycastHit1 = m_RaycastAllNonAllocHits.FirstOrDefault();
                     else if (Result && m_Expect == EnRaycast.Expect.CollisionOverrideRaycastHit2)
